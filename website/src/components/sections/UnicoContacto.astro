@@ -1,0 +1,66 @@
+---
+const beneficios = [
+  {
+    titulo: 'Entiende tu Negocio',
+    descripcion: 'Tu experto se sumerge en tus objetivos empresariales para ofrecer soluciones que realmente impactan.',
+  },
+  {
+    titulo: 'Simplifica la Complejidad',
+    descripcion: 'Coordina internamente a todo el equipo técnico. Tú solo hablas con una persona.',
+  },
+  {
+    titulo: 'Garantiza la Coherencia',
+    descripcion: 'Al mantener un único hilo conductor, cada decisión es consistente con tu visión de negocio.',
+  },
+];
+---
+
+<section class="py-14 md:py-20 bg-white relative overflow-hidden">
+  <div class="absolute top-1/2 right-0 w-[300px] h-[300px] bg-brand-50 blob opacity-50"></div>
+
+  <div class="relative max-w-5xl mx-auto px-4 md:px-8">
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <!-- Imagen -->
+      <div class="animate-on-scroll from-left relative">
+        <div class="relative group">
+          <img
+            src="https://images.unsplash.com/photo-1491911923017-19f90d8d7f83?auto=format&fit=crop&w=600&h=450&q=80"
+            alt="Equipo colaborando"
+            class="rounded-xl shadow-xl w-full object-cover group-hover:shadow-brand-200/40 transition-shadow duration-500"
+            loading="lazy"
+          />
+          <div class="absolute -bottom-4 -right-4 md:-right-6 animate-float bg-brand-500 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-brand-500/30">
+            <p class="text-xs font-bold">Un experto.</p>
+            <p class="text-xs font-bold text-brand-200">Tu experto.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="animate-on-scroll from-right">
+        <span class="text-brand-500 font-semibold text-xs uppercase tracking-[0.15em]">Nuestro diferenciador</span>
+        <h2 class="mt-2 text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight">
+          Único Punto de Contacto
+        </h2>
+        <p class="mt-3 text-neutral-500 text-sm leading-relaxed">
+          Cada cliente recibe un experto Salesforce exclusivo como único interlocutor desde el primer día.
+          Este modelo no puede ser replicado por las grandes consultoras.
+        </p>
+
+        <div class="mt-6 space-y-4">
+          {beneficios.map((b, i) => (
+            <div class={`animate-on-scroll delay-${(i + 1) * 100} flex gap-3 group`}>
+              <div class="flex-shrink-0 w-10 h-10 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center font-bold text-xs border-2 border-brand-100 group-hover:bg-brand-500 group-hover:text-white group-hover:border-brand-500 transition-all duration-300">
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-neutral-900 group-hover:text-brand-600 transition-colors duration-300">{b.titulo}</h3>
+                <p class="mt-0.5 text-neutral-500 text-xs leading-relaxed">{b.descripcion}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

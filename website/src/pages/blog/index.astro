@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Blog - Salesforce, IA y Transformación Digital"
+  description="Artículos sobre Salesforce, inteligencia artificial y transformación digital para PYMEs. Tendencias, guías y casos de uso."
+>
+  <section class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4 md:px-8">
+      <div class="text-center mb-16">
+        <h1 class="text-3xl md:text-4xl font-bold text-brand-900">Blog</h1>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+          Ideas, tendencias y guías prácticas sobre Salesforce, IA y transformación digital
+          para PYMEs.
+        </p>
+      </div>
+
+      {posts.length === 0 ? (
+        <p class="text-center text-gray-500">Próximamente publicaremos nuestros primeros artículos. ¡Vuelve pronto!</p>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map(post => (
+            <a href={`/blog/${post.id}`} class="group block bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden">
+              {post.data.heroImage && (
+                <img src={post.data.heroImage} alt={post.data.title} class="w-full h-48 object-cover" />
+              )}
+              <div class="p-6">
+                <p class="text-sm text-brand-600 font-medium">
+                  {post.data.pubDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+                <h2 class="mt-2 text-lg font-bold text-brand-900 group-hover:text-brand-600 transition">
+                  {post.data.title}
+                </h2>
+                <p class="mt-2 text-gray-600 text-sm line-clamp-3">{post.data.description}</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {post.data.tags.map(tag => (
+                    <span class="text-xs bg-brand-50 text-brand-700 px-2 py-1 rounded-full">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

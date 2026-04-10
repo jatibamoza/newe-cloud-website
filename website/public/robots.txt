@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://newecloud.io/sitemap-index.xml

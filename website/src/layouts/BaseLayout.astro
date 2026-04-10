@@ -1,0 +1,35 @@
+---
+import BaseHead from '../components/layout/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import WhatsAppButton from '../components/ui/WhatsAppButton.astro';
+import ConsultorIA from '../components/ui/ConsultorIA.astro';
+import ScrollAnimations from '../components/ui/ScrollAnimations.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const { title, description, ogImage, canonicalURL } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead {title} {description} {ogImage} {canonicalURL} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-neutral-900">
+    <Header />
+    <main class="flex-1 pt-18">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppButton />
+    <ConsultorIA />
+    <ScrollAnimations />
+  </body>
+</html>
