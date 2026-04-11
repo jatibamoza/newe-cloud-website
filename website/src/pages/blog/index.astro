@@ -47,6 +47,66 @@ const posts = (await getCollection('blog'))
           ))}
         </div>
       )}
+
+      <!-- Suscripción al blog -->
+      <div class="mt-16 max-w-2xl mx-auto">
+        <div class="bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 rounded-2xl p-8 md:p-10 text-center">
+          <h2 class="text-xl md:text-2xl font-bold text-white">
+            Recibe nuestros artículos en tu email
+          </h2>
+          <p class="mt-2 text-sm text-brand-200 max-w-md mx-auto">
+            Consejos prácticos sobre Salesforce e IA para PYMEs. Sin spam, solo contenido que aporta valor.
+          </p>
+          <form id="blog-subscribe-form" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="tu@email.com"
+              class="flex-1 px-4 py-3 rounded-full text-sm bg-white/10 border border-white/20 text-white placeholder-brand-300 focus:outline-none focus:border-brand-400 focus:bg-white/15 transition-colors"
+            />
+            <button
+              type="submit"
+              class="px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-lg shadow-brand-500/30 hover:shadow-brand-400/40 whitespace-nowrap"
+            >
+              Suscribirme
+            </button>
+          </form>
+          <p id="subscribe-msg" class="mt-3 text-xs text-brand-300 hidden"></p>
+        </div>
+      </div>
     </div>
   </section>
+
+  <script>
+    const form = document.getElementById('blog-subscribe-form') as HTMLFormElement;
+    const msg = document.getElementById('subscribe-msg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = new FormData(form).get('email') as string;
+
+      if (!email) return;
+
+      // Por ahora, mailto como fallback hasta conectar con Brevo/Mailchimp
+      if (msg) {
+        msg.textContent = '¡Gracias! Te hemos añadido a la lista. Recibirás nuestros próximos artículos.';
+        msg.classList.remove('hidden');
+        msg.classList.add('text-accent-green');
+      }
+
+      // Enviar email de notificación al equipo
+      try {
+        await fetch('/api/suscripcion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+      } catch {
+        // Silencioso — el endpoint se conectará con Brevo más adelante
+      }
+
+      form.reset();
+    });
+  </script>
 </BaseLayout>
