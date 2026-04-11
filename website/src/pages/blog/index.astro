@@ -81,32 +81,47 @@ const posts = (await getCollection('blog'))
   <script>
     const form = document.getElementById('blog-subscribe-form') as HTMLFormElement;
     const msg = document.getElementById('subscribe-msg');
+    const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = new FormData(form).get('email') as string;
-
       if (!email) return;
 
-      // Por ahora, mailto como fallback hasta conectar con Brevo/Mailchimp
-      if (msg) {
-        msg.textContent = '¡Gracias! Te hemos añadido a la lista. Recibirás nuestros próximos artículos.';
-        msg.classList.remove('hidden');
-        msg.classList.add('text-accent-green');
+      // Deshabilitar botón mientras procesa
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
       }
 
-      // Enviar email de notificación al equipo
       try {
-        await fetch('/api/suscripcion', {
+        const res = await fetch('/api/suscripcion', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         });
-      } catch {
-        // Silencioso — el endpoint se conectará con Brevo más adelante
-      }
 
-      form.reset();
+        const data = await res.json();
+
+        if (msg) {
+          msg.textContent = data.message || data.error || '¡Gracias por suscribirte!';
+          msg.classList.remove('hidden', 'text-accent-green', 'text-accent-pink');
+          msg.classList.add(res.ok ? 'text-accent-green' : 'text-accent-pink');
+        }
+
+        if (res.ok) form.reset();
+      } catch {
+        if (msg) {
+          msg.textContent = 'Error de conexión. Inténtalo de nuevo.';
+          msg.classList.remove('hidden', 'text-accent-green');
+          msg.classList.add('text-accent-pink');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Suscribirme';
+        }
+      }
     });
   </script>
 </BaseLayout>

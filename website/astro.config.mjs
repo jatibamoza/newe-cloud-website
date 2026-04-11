@@ -20,6 +20,8 @@ export default defineConfig({
       ANTHROPIC_API_KEY: envField.string({ context: 'server', access: 'secret' }),
       UPSTASH_REDIS_REST_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UPSTASH_REDIS_REST_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+      BREVO_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      BREVO_LIST_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });
